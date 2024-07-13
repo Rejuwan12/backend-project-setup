@@ -8,8 +8,13 @@ import ProductRoute from './modules/product/product.route';
 
 app.use(express.json());
 app.use(cors());
-
 app.use('/api/products', ProductRoute);
+app.all('*',(req,res)=>{
+  res.status(400).json({
+    success:false,
+    messege:`Route Not found`
+  })
+})
 
 async function main() {
   await mongoose.connect(server.database_url as string);
