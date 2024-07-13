@@ -21,7 +21,7 @@ const CreateProduct = async (req: Request, res: Response) => {
       });
     } catch (error: unknown) {
       if (error instanceof z.ZodError) {
-        // Handle Zod validation errors
+        //  Zod validation error
         res.status(400).json({
           success: false,
           message: 'Validation failed',
@@ -65,11 +65,74 @@ const CreateProduct = async (req: Request, res: Response) => {
     }
   };
 
+  const GetProductById = async (req: Request, res: Response) => {
+    try {
+      const Id = req.params.productId;
+      const result = await ProductServices.GetProductByIdFromDb(Id);
+      if (result) {
+        res.status(200).json({
+          success: true,
+          message: 'Product fetched successfully!',
+          data: result,
+        });
+      } else {
+        res.status(400).json({
+          success: false,
+          message: "Clouden't find the product!",
+        });
+      }
+    } catch (error: unknown) {
+      res.status(400).json({
+        success: false,
+        message: 'Unexpected error occurred',
+        error,
+      });
+    }
+  };
 
+  const UpdateProductById = async (req: Request, res: Response) => {
+    try {
+      const Id = req.params.productId;
+      const UpdateData = req.body;
+      const result = await ProductServices.UpdateProductByFromId(Id, UpdateData);
+      res.status(200).json({
+        success: true,
+        message: 'Product Updated Successfully!',
+        data: result,
+      });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message: "Cloudn't Update",
+        error,
+      });
+    }
+  };
+
+  const DeleteProductById = async (req: Request, res: Response) => {
+    try {
+      const Id = req.params.productId;
+      const result = await ProductServices.DeleteProductByIdFromDb(Id);
+      res.status(200).json({
+        success: true,
+        message: 'Product deleted successfully!',
+        data: result,
+      });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message: "Unexpectedly product cloudn't delete!",
+        error: error,
+      });
+    }
+  };
 
 
 
   export const ProductController ={
     CreateProduct,
-    GetProduct
+    GetProduct,
+    GetProductById,
+    UpdateProductById,
+    DeleteProductById
   }

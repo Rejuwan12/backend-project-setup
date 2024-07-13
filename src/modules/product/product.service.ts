@@ -24,7 +24,26 @@ const CreateProductIntoDb = async (product: ProductInterface) => {
   };
 
 
+  const GetProductByIdFromDb = async (id: string) => {
+    const result = await ProductModel.findById({ _id: id });
+    return result;
+  };
 
+  const UpdateProductByFromId = async (id: string, body: object) => {
+    //eslint-disable-next-line
+    const UpdateDoc: any = { $set: {} };
+    Object.entries(body).forEach(([key, value]) => {
+      UpdateDoc.$set[key] = value;
+    });
+    const result = await ProductModel.updateOne({ _id: id }, UpdateDoc);
+    return result;
+  };
+
+
+  const DeleteProductByIdFromDb = async (id: string) => {
+    const result = await ProductModel.findOneAndDelete({ _id: id });
+    return result;
+  };
 
 
 
@@ -36,5 +55,8 @@ const CreateProductIntoDb = async (product: ProductInterface) => {
 
   export const ProductServices = {
     CreateProductIntoDb,
-    GetProductFormDb
+    GetProductFormDb,
+    GetProductByIdFromDb,
+    UpdateProductByFromId,
+    DeleteProductByIdFromDb
   };
