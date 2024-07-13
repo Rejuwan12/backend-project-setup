@@ -3,7 +3,7 @@ import { server } from './app/config';
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
-import ProductRoute from './modules/product/product.route';
+import ProductRoute from './app/modules/product/product.route';
 
 
 app.use(express.json());
